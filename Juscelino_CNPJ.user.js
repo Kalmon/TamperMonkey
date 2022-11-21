@@ -7,6 +7,8 @@
 // @match        https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gov.br
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
+// @updateURL    https://github.com/Kalmon/TamperMonkey/raw/master/Juscelino_CNPJ.user.js
+// @downloadURL  https://github.com/Kalmon/TamperMonkey/raw/master/Juscelino_CNPJ.user.js
 // @grant        none
 // ==/UserScript==
 let Scripts = ['https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.32.4/docxtemplater.js','https://unpkg.com/pizzip@3.1.3/dist/pizzip.js','https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js','https://unpkg.com/pizzip@3.1.3/dist/pizzip-utils.js'];
