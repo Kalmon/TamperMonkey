@@ -5,12 +5,12 @@ for(let cont=0;cont<Scripts.length;cont++){
     if(Scripts[cont].includes(".css")){
         $('head').append('<link rel="stylesheet" href="'+Scripts[cont]+'" type="text/css" />');
     }else{
-        $('head').append('<link rel="stylesheet" href="'+Scripts[cont]+'" type="text/css" />');
+        temp = await loadScript(Scripts[cont]);
+        console.log(temp.length + " - " +Scripts[cont]);
+        eval(temp);
     }
 }
-(async function() {
-    'use strict';
-})();
+
 
 async function loadScript(src) {
     return new Promise((resolv, reject) => {
