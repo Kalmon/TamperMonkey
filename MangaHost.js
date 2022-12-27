@@ -249,12 +249,16 @@ var MyApp;
 })();
 
 function checkLanc(){
+  let temp;
     if((window.location.href).includes("/manga/")){
         $("#BTN_fav").show();
     }else{
         $(".link-2").map((index,el)=>{
             if(indexFav({Nome:$(el).text()})!=null){
                 $($(".ekfaA.w-row")[index]).addClass('lancFav');
+                temp = $($(".ekfaA.w-row")[index]);
+                $($(".ekfaA.w-row")[index]).remove();
+                $("#dados").prepend(temp);            
             }
 
         })
