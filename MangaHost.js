@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Fav Host
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.1
 // @description  try to take over the world!
 // @author       You
 // @match        https://mangahosted.com/*
 // @require https://code.jquery.com/jquery-3.6.0.min.js
 // @icon         https://i.pinimg.com/236x/b8/a9/6a/b8a96a8026d59b815cef59f98b8c48ec.jpg
-// @downloadURL  https://github02.private.domain/raw/github-username/repo-name/master/userscript.js
-// @updateURL    https://github02.private.domain/raw/github-username/repo-name/master/userscript.js
+// @downloadURL  https://raw.githubusercontent.com/Kalmon/TamperMonkey/main/MangaHost.js
+// @updateURL    https://raw.githubusercontent.com/Kalmon/TamperMonkey/main/MangaHost.js
 // ==/UserScript==
 
 $("body").append(`
@@ -50,7 +50,7 @@ $("body").append(`
     overflow: hidden;
 }
 .stat.ongo {
-    background: none repeat scroll 0% 0% #3B5CA3;
+    background: none repeat scroll 0% 0% #DC3535;
 }
 .anim a {
     display: block;
@@ -120,7 +120,8 @@ font-size: 24px;
     <div class="st-panel-contents">
      <div class="w-100"><p>Usuario: {{usuario}}</p></div>
       <div id='recomanim'>
-         <div v-for="Fav in DataBase.Favs" class='anim'>
+         <div v-for="(Fav,index) in DataBase.Favs" class='anim'>
+            <span @click="deletMang(index)" class='stat ongo'><i class="fa-solid fa-trash"></i></span>
             <a :href="'/manga/'+Fav.Link">
               <img :src='Fav.Capa' :title='Fav.Nome'/>
               <p>{{Fav.Nome}}</p>
@@ -184,6 +185,11 @@ var MyApp;
             }
         },
         methods:{
+            deletMang(index){
+                MyApp.DataBase.Favs.splice(index, 1);
+                firebase.database().ref(MD5(MyApp.usuario)).set(MyApp.DataBase);
+                MyApp.Manga = indexFav(manga);
+            },
             changeUser(){
                 let Email = prompt("Insira seu email maskeioko");
                 localStorage.setItem("Usuario",Email);
