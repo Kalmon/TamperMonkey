@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Fav Host
+// @name         Maskeiko Mangas
 // @namespace    http://tampermonkey.net/
-// @version      0.3
-// @description  try to take over the world!
-// @author       You
+// @version      0.5
+// @description  Ola Mundo!
+// @author       Dedo Not Found
 // @match        https://mangahosted.com/*
 // @require https://code.jquery.com/jquery-3.6.0.min.js
 // @icon         https://i.pinimg.com/236x/b8/a9/6a/b8a96a8026d59b815cef59f98b8c48ec.jpg
