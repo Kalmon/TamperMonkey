@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Maskeiko Mangas
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  Ola Mundo!
 // @author       Dedo Not Found
 // @match        https://mangahosted.com/*
@@ -113,13 +113,25 @@ font-size: 24px;
   }
 }
 
+.gridChild{
+flex: 0 0 100%;
+text-align: left;
+
+padding-left: 10px;
+    padding-right: 10px;
+}
+.gridChild i{
+    padding-right: 10px;
+}
+.st-panel{
+    width: 500px;
+}
 </style>
 <div id='MyApp' class="grid">
     <div class="st-actionContainer right-bottom" >
   <div class="st-panel">
     <div class="st-panel-header"><i class="fa fa-bars" aria-hidden="true"></i> <a href="https://www.jqueryscript.net/menu/">Menu</a></div>
     <div class="st-panel-contents">
-     <div class="w-100"><p>Usuario: {{usuario}}</p></div>
       <div id='recomanim'>
          <div v-for="(Fav,index) in DataBase.Favs" class='anim'>
             <span @click="deletMang(index)" class='stat ongo'><i class="fa-solid fa-trash"></i></span>
@@ -130,12 +142,12 @@ font-size: 24px;
          </div>
       </div>
 
-      
+
     </div>
     <div class="grid w-100">
-        <a @click="changeUser" href="#" class="gridChild"><i class="fa fa-user" aria-hidden="true"></i></a>
-        <a href="#" class="gridChild"><i class="fa fa-file" aria-hidden="true"></i></a>
-        <a href="#" class="gridChild"><i class="fa fa-table" aria-hidden="true"></i></a>
+        <a @click="changeUser" style="margin-bottom: 1px;" class="gridChild"><i class="fa fa-user" aria-hidden="true"></i> {{usuario}}</a>
+        <a @click="changeScrool" style="flex: 0 0 20%; margin-right: 1px;"  class="gridChild"><i class="fa fa-file" aria-hidden="true"></i>{{DataBase.scrool ? 'INFI' : 'NORM'}}</a>
+        <a style="flex: 0 0 79.5%;" class="gridChild"><i class="fa-solid fa-database"></i>{{fireBase}}</a>
       </div>
   </div>
   <div id="BTN_menu" class="st-btn-container right-bottom" style="display:none">
@@ -156,6 +168,10 @@ setTimeout(()=>{
  },2000)
 </script>
 `);
+setTimeout(()=>{
+    $(".adsbygoogle, .google-auto-placed").remove();
+},5000)
+
 let Scripts = ['https://www.jqueryscript.net/demo/Material-style-Floating-Button-Panel-Plugin-For-jQuery-st-action-panel/js/st.action-panel.js','https://www.jqueryscript.net/demo/Material-style-Floating-Button-Panel-Plugin-For-jQuery-st-action-panel/css/st.action-panel.css','https://www.gstatic.com/firebasejs/5.0.4/firebase.js','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css','https://unpkg.com/vue'];
 let temp;
 for(let cont=0;cont<Scripts.length;cont++){
@@ -172,20 +188,26 @@ var MyApp;
         console.log("Nada do vue ou do launchBtn...");
         await sleep(1000);
     }
+
     MyApp = Vue.createApp({
         data() {
             return {
+                fireBase: localStorage.getItem("fireBase") == null ? "https://favmangahost-default-rtdb.firebaseio.com/" : localStorage.getItem("fireBase"),
                 menu:null,
                 BTN_fav:false,
                 Manga: null,
                 usuario: localStorage.getItem("Usuario") == null ? "" : localStorage.getItem("Usuario"),
                 DataBase : {
                     Favs: [],
-                    scrool:false
+                    scrool: false
                 }
             }
         },
         methods:{
+            changeScrool(){
+                this.DataBase.scrool = !this.DataBase.scrool;
+                firebase.database().ref(MD5(MyApp.usuario)).set(MyApp.DataBase);
+            },
             deletMang(index){
                 MyApp.DataBase.Favs.splice(index, 1);
                 firebase.database().ref(MD5(MyApp.usuario)).set(MyApp.DataBase);
@@ -223,42 +245,50 @@ var MyApp;
         }
     }).mount('#MyApp');
 
-    
+
 
 
     firebase.initializeApp({
-        databaseURL: "https://favmangahost-default-rtdb.firebaseio.com/",
+        databaseURL: MyApp.fireBase,
     });
 
     //firebase.database().ref(MyApp.usuario).set("");
     firebase.database().ref().child(MD5(MyApp.usuario)).on('value', function (snap){
         if(snap.val()!=null){
             MyApp.DataBase = snap.val();
-
-
             let manga = {
                 Nome: $("title").text().split(" | Mang")[0]
             };
             MyApp.Manga = indexFav(manga);
-
             checkLanc();
-
         }
     });
 
 })();
 
+function leituraEscorrida(){
+    if(MyApp.DataBase.scrool==false){
+        return null;
+    }
+    $(".read-slide").css("position","initial");
+    $(".read-slide").css("visibility","visible");
+    $(".read-slide").css("opacity","100");
+    $(".read-slide").css("left","auto");
+    $(".read-slide").css("top","auto");
+}
+
 function checkLanc(){
   let temp;
     if((window.location.href).includes("/manga/")){
         $("#BTN_fav").show();
+        leituraEscorrida();
     }else{
         $(".link-2").map((index,el)=>{
             if(indexFav({Nome:$(el).text()})!=null){
                 $($(".ekfaA.w-row")[index]).addClass('lancFav');
                 temp = $($(".ekfaA.w-row")[index]);
                 $($(".ekfaA.w-row")[index]).remove();
-                $("#dados").prepend(temp);            
+                $("#dados").prepend(temp);
             }
 
         })
