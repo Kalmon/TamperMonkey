@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Maskeiko Mangas
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.5
 // @description  Ola Mundo!
 // @author       Dedo Not Found
 // @match        https://mangahosted.com/*
@@ -278,20 +278,23 @@ function leituraEscorrida(){
 }
 
 function checkLanc(){
-  let temp;
+  let temp = new Array();
     if((window.location.href).includes("/manga/")){
         $("#BTN_fav").show();
         leituraEscorrida();
     }else{
-        $(".link-2").map((index,el)=>{
-            if(indexFav({Nome:$(el).text()})!=null){
-                $($(".ekfaA.w-row")[index]).addClass('lancFav');
-                temp = $($(".ekfaA.w-row")[index]);
-                $($(".ekfaA.w-row")[index]).remove();
-                $("#dados").prepend(temp);
+        $(".ekfaA.w-row").map((index,el)=>{
+            if(indexFav({Nome:$(el).find(".title-1 a").text()})!=null){
+                $(el).addClass('lancFav');
+                temp.push($(el));
+                $(el).remove();
+                //$("#dados").prepend(temp);
             }
-
         })
+        temp.reverse();
+        temp.forEach(el=>{
+            $("#dados").prepend(el);
+        });
     }
 }
 
