@@ -275,6 +275,7 @@ function leituraEscorrida(){
     $(".read-slide").css("opacity","100");
     $(".read-slide").css("left","auto");
     $(".read-slide").css("top","auto");
+    $(".read-slideshow").css("display","grid");
 }
 
 function checkLanc(){
