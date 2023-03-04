@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Maskeiko Mangas
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.8
 // @description  Ola Mundo!
 // @author       Dedo Not Found
 // @match        https://mangahost4.com/*
