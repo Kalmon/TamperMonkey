@@ -263,7 +263,9 @@ var MyApp;
             checkLanc();
         }
     });
-
+    $("#mais").click(function() {
+      checkLanc();
+    });
 })();
 
 function leituraEscorrida(){
