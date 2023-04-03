@@ -1,14 +1,12 @@
 // ==UserScript==
 // @name         Juscelino - CNPJ
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.1
 // @description  try to take over the world!
 // @author       You
 // @match        https://solucoes.receita.fazenda.gov.br/Servicos/cnpjreva/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gov.br
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
-// @updateURL    https://github.com/Kalmon/TamperMonkey/raw/master/Juscelino_CNPJ.user.js
-// @downloadURL  https://github.com/Kalmon/TamperMonkey/raw/master/Juscelino_CNPJ.user.js
 // @grant        none
 // ==/UserScript==
 let Scripts = ['https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.32.4/docxtemplater.js','https://unpkg.com/pizzip@3.1.3/dist/pizzip.js','https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js','https://unpkg.com/pizzip@3.1.3/dist/pizzip-utils.js'];
@@ -68,6 +66,20 @@ return `<td>${aux[el]}</td>`;
         `);
         $("#BTN_print").click(function (e) {
             e.preventDefault();
+            aux.Protocolo = prompt("Numero de protocolo?");
+            if (aux.Protocolo == null || aux.Protocolo == "") {
+                return null;
+            }
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:3000/",
+                data: aux,
+                success: ()=>{
+                    aux.Protocolo = null;
+                    console.log(this)
+                }
+            });
+            return null;
             loadFile(
                 "https://ipfs.io/ipfs/bafybeiedfptzlj6rr7fwhom2ldsveuy523a2kc72uslgjhfnzmoozvvj5i?filename=justelino1-03.docx",
                 function (error, content) {
@@ -85,7 +97,7 @@ return `<td>${aux[el]}</td>`;
                     if (aux.Protocolo == null || aux.Protocolo == "") {
                         return null;
                     }
-
+                    console.log(aux);
                     // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
                     doc.render(aux);
                     var blob = doc.getZip().generate({
@@ -107,8 +119,17 @@ return `<td>${aux[el]}</td>`;
                 }
             );
         });
+        $("#app td").click(function(e){
+            $(this).attr("style", "background-color: #A4BE7B  !important");
+            navigator.clipboard.writeText($(this).text()).then(function () {
 
-
+            }, function () {
+                alert('Failure to copy. Check permissions for clipboard')
+            });
+            setTimeout(()=>{
+            $(this).attr("style", "background-color: white  !important")
+            },1000);
+        })
     }
 
     function loadFile(url, callback) {
@@ -177,12 +198,26 @@ return `<td>${aux[el]}</td>`;
             aux['EconomicaPrincipal'] = aux['EconomicaPrincipal'].trim();
             localStorage.setItem("database",JSON.stringify(aux));
             $("#app").css("background-color", "#65C18C");
+            aux["Capital"] = "_______";
+            aux.OPC = `<button class="btn btn-info" id="BTN_print"><i class="fas fa-print"></i> Imprimir</button>`;
+            print();
         });
     }
 
 
     // Your code here...
 })();
+
+function copy(selector){
+  var $temp = $("<div>");
+  $("body").append($temp);
+  $temp.attr("contenteditable", true)
+       .html($(selector).html()).select()
+       .on("focus", function() { document.execCommand('selectAll',false,null); })
+       .focus();
+  document.execCommand("copy");
+  $temp.remove();
+}
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
