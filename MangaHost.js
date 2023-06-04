@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Maskeiko Mangas
 // @namespace    http://tampermonkey.net/
-// @version      0.97
+// @version      0.98
 // @description  Ola Mundo!
 // @author       Dedo Not Found
 // @match        https://mangahosted.com/*
@@ -260,7 +260,11 @@ var MyApp;
     //firebase.database().ref(MyApp.usuario).set("");
     firebase.database().ref().child(MD5(MyApp.usuario)).on('value', function (snap){
         if(snap.val()!=null){
-            MyApp.DataBase = snap.val();
+            let temp = snap.val();
+            if(typeof temp.Favs == "undefined"){
+                temp.Favs = [];
+            }
+            MyApp.DataBase = temp;
             let manga = {
                 Nome: $("title").text().split(" | Mang")[0]
             };
