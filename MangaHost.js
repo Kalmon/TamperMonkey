@@ -7,8 +7,8 @@
 // @match        https://mangahosted.com/*
 // @require      https://code.jquery.com/jquery-3.6.0.min.js
 // @icon         https://i.pinimg.com/236x/b8/a9/6a/b8a96a8026d59b815cef59f98b8c48ec.jpg
-// @updateURL    https://raw.githubusercontent.com/Kalmon/TamperMonkey/main/MangaHost.js
-// @downloadURL  https://raw.githubusercontent.com/Kalmon/TamperMonkey/main/MangaHost.js
+// @updateURL    https://cdn.jsdelivr.net/gh/Kalmon/TamperMonkey@master/MangaHost.js
+// @downloadURL  https://cdn.jsdelivr.net/gh/Kalmon/TamperMonkey@master/MangaHost.js
 // ==/UserScript==
 
 $("body").append(`
