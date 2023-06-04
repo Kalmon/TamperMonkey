@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Maskeiko Mangas
 // @namespace    http://tampermonkey.net/
-// @version      0.95
+// @version      0.96
 // @description  Ola Mundo!
 // @author       Dedo Not Found
 // @match        https://mangahosted.com/*
@@ -278,6 +278,8 @@ function leituraEscorrida(){
     if(MyApp.DataBase.scrool==false){
         return null;
     }
+    console.log("Escorrido.");
+    $("#slider").css("height","auto");
     $(".read-slide").css("position","initial");
     $(".read-slide").css("visibility","visible");
     $(".read-slide").css("opacity","100");
