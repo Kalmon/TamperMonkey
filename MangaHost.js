@@ -169,8 +169,7 @@ setTimeout(()=>{
 </script>
 `);
 setTimeout(()=>{
-    $(".adsbygoogle, .google-auto-placed").css('width':'0px');
-  $(".adsbygoogle, .google-auto-placed").css('height':'0px');
+     $(".adsbygoogle, .google-auto-placed").remove();
 },5000)
 
 let Scripts = ['https://cdn.jsdelivr.net/gh/Kalmon/TamperMonkey@master/maskeikohost/st.action-panel.js',
